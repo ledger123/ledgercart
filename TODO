@@ -1,0 +1,6 @@
+. store fullname from firstname/lastname
+. email address change should be reflected in both tables
+. form to change customer information
+. inline error messages with session management
+. session time in config file.
+. jquery/javascript to show optional shipto columns

@@ -1,0 +1,57 @@
+[% INCLUDE "$form.header" title='Item Detail' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>[% form.itemdetail.description %]</h2>
+
+<table border="0" width="100%">
+<tr>
+  <td><img src="products/small.[% form.itemdetail.image %]"></td>
+  <td>[% form.itemdetail.htmlnotes %]</td>
+</tr>
+<tr>
+  <td>Price: [% nf.format_price(form.itemdetail.sellprice) %]</td>
+  <td align=right>
+	<form action='index.pl' method=post>
+	Quantity <input type=text name=qty size=3 value=1>
+	<input type=submit name=submit value='Add to cart'>
+	<input type=hidden name=action value='add_to_cart'>
+	<input type=hidden name=view value='detail'>
+	<input type=hidden name=pid value=[% form.itemdetail.id %]>
+	</form>
+  </td>
+</tr>
+</table>
+<br/>
+
+[% IF form.isadmin %]
+<a href="index.pl?pid=[% form.itemdetail.id %]&action=create_thumbnail">Recreate thumbnail</a>
+<br/>
+
+<form action="index.pl" method="post" enctype="multipart/form-data">
+<p>New image: <input type="file" name="image" /></p>
+<p><input type="submit" name="action" value="Upload Image" /></p>
+<input type=hidden name=pid value=[% form.itemdetail.id %] />
+</form>
+
+<br/>
+
+<form action="index.pl" method="post">
+<p>Item notes:</p>
+<p><textarea name="notes" rows=8 cols=50>[% form.itemdetail.notes %]</textarea></p>
+<p><input type="submit" name="action" value="Update Item" /></p>
+<input type=hidden name=pid value=[% form.itemdetail.id %] />
+</form>
+<p><a href="http://daringfireball.net/projects/markdown/dingus" target="_new">Syntax for notes.</a></p>
+[% END %]
+
+Back to <a href=index.pl?gid=[% form.itemdetail.partsgroup_id %]>[% form.itemdetail.partsgroup %]</a>
+
+</div>
+
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

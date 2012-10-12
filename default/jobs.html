@@ -1,0 +1,25 @@
+[% INCLUDE "$form.header" title='Home' %]
+<div class="left">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>Jobs at WWLML</h2>
+
+<h3>Jobs at WWLML</h3>
+
+<div class="articles">
+<p>
+(under development)
+</p>
+</div>
+
+[% IF form.isadmin %]
+<a href=index.pl?page=editpage&page2edit=[% form.page %]>Edit</a>
+[% END %]
+
+</div>
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

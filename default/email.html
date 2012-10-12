@@ -1,0 +1,80 @@
+Dear [% form.customer.contact %]
+
+Thank you for your order. Here is your order detail:
+
+<p>* Order Number: [% form.sonumber %]</p>
+<p>* Order Date: [% form.current_date %]</p>
+
+<ul>
+<li>Email: [% form.customer.email %]</li>
+<li>Business Name: [% form.customer.name %]</li>
+<li>First name: [% form.customer.firstname %]</li>
+<li>Last name: [% form.customer.lastname %]</li>
+<li>Phone: [% form.customer.phone %]</li>
+<li>Address1: [% form.customer.address1 %]</li>
+<li>Address2: [% form.customer.address2 %]</li>
+<li>City: [% form.customer.city %]</li>
+<li>State: [% form.customer.state %]</li>
+<li>Zipcode: [% form.customer.zipcode %]</li>
+<li>Country: [% form.customer.country %]</li>
+<ul>
+
+<table width="100%">
+<tr class="listheading">
+  <th>Item</th>
+  <th>Description</th>
+  <th>Qty</th>
+  <th>Price</th>
+  <th>Extended</th>
+</tr>
+[% rowcount = 0 %]
+[% j = 0 %]
+[% subtotal = 0 %]
+[% FOREACH pid IN form.cart.keys %]
+[% rowcount = rowcount + 1 %]
+[% j = i + 1 %]
+[% j = i % 2 %]
+<tr class="listrow[% j %]">
+<input type=hidden name="parts_id_[% rowcount %]" value=[% form.cart.$pid.parts_id %]>
+<td>[% form.cart.$pid.partnumber %]</td>
+<td>[% form.cart.$pid.description %]</td>
+<td align=right>[% form.cart.$pid.qty %]</td>
+<td align=right>[% nf.format_price(form.cart.$pid.sellprice) %]</td>
+<td align=right>[% nf.format_price(form.cart.$pid.extended) %]</td>
+</tr>
+[% subtotal = subtotal + form.cart.$pid.extended %]
+[% END %]
+
+<tr class="listsubtotal">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align=right>[% nf.format_price(subtotal) %]</td>
+</tr>
+
+[% FOREACH accno IN tax.keys %]
+[% IF tax.$accno.amount %]
+<tr class="listrow0">
+<td>&nbsp;</td>
+<td align="right">[% tax.$accno.description %]&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align=right>[% tax.$accno.amount %]</td>
+</tr>
+[% subtotal = subtotal + tax.$accno.amount %]
+[% END %]
+[% END %]
+
+<tr class="listtotal">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align=right>[% subtotal %]</td>
+</tr>
+</table>
+
+Thank you for your business.
+[% form.storename %]
+

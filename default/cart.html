@@ -1,0 +1,81 @@
+[% INCLUDE "$form.header" title='Your cart' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>Your cart</h2>
+<table width="100%">
+<tr class="listheading">
+  <th>SKU</th>
+  <th>&nbsp;</th>
+  <th>Description</th>
+  <th>Qty</th>
+  <th>Price</th>
+  <th>Extended</th>
+</tr>
+[% rowcount = 0 %]
+[% j = 0 %]
+[% subtotal = 0 %]
+<form action=index.pl method=post>
+[% FOREACH pid IN form.cart.keys %]
+[% rowcount = rowcount + 1 %]
+[% j = i + 1 %]
+[% j = i % 2 %]
+<tr class="listrow[% j %]">
+<input type=hidden name="parts_id_[% rowcount %]" value=[% form.cart.$pid.id %]>
+<td>[% form.cart.$pid.partnumber %]</td>
+<td><img src=products/micro.[% form.cart.$pid.image %]></td>
+<td>[% form.cart.$pid.description %]</td>
+<td align=center><input type=text size=4 name="qty_[% rowcount %]" value='[% form.cart.$pid.qty %]'></td>
+<td align=right>[% nf.format_price(form.cart.$pid.sellprice) %]</td>
+<td align=right>[% nf.format_price(form.cart.$pid.extended) %]</td>
+</tr>
+[% subtotal = subtotal + form.cart.$pid.extended %]
+[% END %]
+
+<tr class="listsubtotal">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align=right>[% nf.format_price(subtotal) %]</td>
+</tr>
+
+[% FOREACH accno IN tax.keys %]
+[% IF tax.$accno.amount %]
+<tr class="listrow0">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align="right">[% tax.$accno.description %]&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align=right>[% nf.format_price(tax.$accno.amount) %]</td>
+</tr>
+[% subtotal = subtotal + tax.$accno.amount %]
+[% END %]
+[% END %]
+
+<tr class="listtotal">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align=center><input type=submit name=submit value='Update'></td>
+<td>&nbsp;</td>
+<td align=right>[% nf.format_price(subtotal) %]</td>
+</tr>
+</table>
+<p>To remove an item, change qty to 0 and update.</p>
+
+<input type=hidden name=rowcount value='[% rowcount %]'>
+<input type=hidden name=page value='cart'>
+<input type=hidden name=action value='update_cart'>
+</form>
+<br/>
+<div align="right"><h2><a href=index.pl?page=checkout>Continue with Checkout -></a></h2></div>
+</div>
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

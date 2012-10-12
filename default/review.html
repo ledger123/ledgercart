@@ -1,0 +1,146 @@
+[% INCLUDE "$form.header" title='Review Your Order' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>Review your order</h2>
+
+<table width="100%">
+<tr class="listheading">
+  <th>SKU</th>
+  <th>&nbsp;</th>
+  <th>Description</th>
+  <th>Qty</th>
+  <th>Price</th>
+  <th>Extended</th>
+</tr>
+[% rowcount = 0 %]
+[% j = 0 %]
+[% subtotal = 0 %]
+<form action=index.pl method=post>
+[% FOREACH pid IN form.cart.keys %]
+[% rowcount = rowcount + 1 %]
+[% j = i + 1 %]
+[% j = i % 2 %]
+<tr class="listrow[% j %]">
+<td>[% form.cart.$pid.partnumber %]</td>
+<td><img src=products/micro.[% form.cart.$pid.image %]></td>
+<td>[% form.cart.$pid.description %]</td>
+<td align=right>[% form.cart.$pid.qty %]</td>
+<td align=right>[% nf.format_price(form.cart.$pid.sellprice) %]</td>
+<td align=right>[% nf.format_price(form.cart.$pid.extended) %]</td>
+</tr>
+[% subtotal = subtotal + form.cart.$pid.extended %]
+[% END %]
+
+<tr class="listsubtotal">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align=right>[% nf.format_price(subtotal) %]</td>
+</tr>
+
+[% FOREACH accno IN tax.keys %]
+[% IF tax.$accno.amount %]
+<tr class="listrow0">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align="right">[% tax.$accno.description %]&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align=right>[% nf.format_price(tax.$accno.amount) %]</td>
+</tr>
+[% subtotal = subtotal + tax.$accno.amount %]
+[% END %]
+[% END %]
+
+<tr class="listtotal">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align=right>[% nf.format_price(subtotal) %]</td>
+</tr>
+</table>
+
+<form method='post' action='index.pl'>
+<h2>Bill to:</h2>
+<ul>
+<li>Email: [% form.email %]</li>
+<li>First name: [% form.firstname %]</li>
+<li>Last name: [% form.lastname %]</li>
+<li>Company: [% form.name %]</li>
+<li>Phone: [% form.phone %]</li>
+<li>Address1: [% form.address1 %]</li>
+<li>Address2: [% form.address2 %]</li>
+<li>City: [% form.city %]</li>
+<li>State: [% form.state %]</li>
+<li>Zipcode: [% form.zipcode %]</li>
+<li>Country: [% form.country %]</li>
+<li>Special Notes: [% form.notes %]</li>
+
+[% FOREACH accno IN tax.keys %]
+<li>[% tax.$accno.description %]: [% cgi.param("tax_$accno") %]</li>
+[% END %]
+</ul>
+
+<h2>Ship to:</h2>
+<ul>
+<li>Full name: [% form.shiptocontact %]</li>
+<li>Company: [% form.shiptoname %]</li>
+<li>Address1: [% form.shiptoaddress1 %]</li>
+<li>Address2: [% form.shiptoaddress2 %]</li>
+<li>City: [% form.shiptocity %]</li>
+<li>State: [% form.shiptostate %]</li>
+<li>Zipcode: [% form.shiptozipcode %]</li>
+<li>Country: [% form.shiptocountry %]</li>
+<li>Phone: [% form.shiptophone %]</li>
+<li>Fax: [% form.shiptofax %]</li>
+<li>Email: [% form.shiptoemail %]</li>
+</ul>
+
+<input type=hidden name=email     value="[% form.email %]">
+<input type=hidden name=password  value="[% form.password %]">
+<input type=hidden name=name      value="[% form.name %]">
+<input type=hidden name=firstname value="[% form.firstname %]">
+<input type=hidden name=lastname  value="[% form.lastname %]">
+<input type=hidden name=phone     value="[% form.phone %]">
+<input type=hidden name=address1  value="[% form.address1 %]">
+<input type=hidden name=address2  value="[% form.address2 %]">
+<input type=hidden name=city      value="[% form.city %]">
+<input type=hidden name=state     value="[% form.state %]">
+<input type=hidden name=zipcode   value="[% form.zipcode %]">
+<input type=hidden name=country   value="[% form.country %]">
+<input type=hidden name=notes	  value="[% form.notes %]">
+
+[% FOREACH accno IN tax.keys %]
+<input type=hidden name=tax_[% accno %] value="[% cgi.param("tax_$accno") %]">
+[% END %]
+
+<input type=hidden name=shiptoname      value="[% form.shiptoname %]">
+<input type=hidden name=shiptoaddress1  value="[% form.shiptoaddress1 %]">
+<input type=hidden name=shiptoaddress2  value="[% form.shiptoaddress2 %]">
+<input type=hidden name=shiptocity      value="[% form.shiptocity %]">
+<input type=hidden name=shiptostate     value="[% form.shiptostate %]">
+<input type=hidden name=shiptozipcode   value="[% form.shiptozipcode %]">
+<input type=hidden name=shiptocountry   value="[% form.shiptocountry %]">
+<input type=hidden name=shiptocontact   value="[% form.shiptocontact %]">
+<input type=hidden name=shiptophone     value="[% form.shiptophone %]">
+<input type=hidden name=shiptofax       value="[% form.shiptofax %]">
+<input type=hidden name=shiptoemail     value="[% form.shiptoemail %]">
+
+<input type=submit value='Place order'>
+<input type=hidden name='page' value='finish'>
+</form>
+
+[% form.gw_html %]
+
+</div>
+
+<!-- [% INCLUDE "$form.sidebar" %] -->
+
+[% INCLUDE "$form.footer" %]

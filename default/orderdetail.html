@@ -1,0 +1,60 @@
+[% INCLUDE "$form.header" title='Order Detail' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>Order detail</h2>
+
+<table>
+<tr><th align="left">Order Number</th><td>[% form.orderheader.ordnumber %]</td></tr>
+<tr><th align="left">Order Date</th><td>[% form.orderheader.transdate %]</td></tr>
+<tr><th align="left">Notes</th><td>[% form.orderheader.notes %]</td></tr>
+</tr>
+</table>
+
+<table width=100%>
+<tr class="listheading">
+  <th>Item</th>
+  <th>Description</th>
+  <th>Qty</th>
+  <th>Price</th>
+  <th>Extended</th>
+</tr>
+
+[% j = 0 %]
+[% FOREACH id IN form.orderdetail.keys %]
+   [% j = j + 1 %]
+   [% j = j % 2 %]
+<tr class="listrow[% j %]">
+  <td>[% form.orderdetail.$id.partnumber %]</td>
+  <td>[% form.orderdetail.$id.description %]</td>
+  <td align=right>[% form.orderdetail.$id.qty %]</td>
+  <td align=right>[% nf.format_price(form.orderdetail.$id.sellprice) %]</td>
+  <td align=right>[% nf.format_price(form.orderdetail.$id.amount) %]</td>
+</tr>
+[% END %]
+
+<tr class="listsubtotal">
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>Subtotal</td>
+  <td align="right">[% nf.format_price(form.orderheader.netamount) %]</td>
+</tr>
+<tr class="listtotal">
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>Total</td>
+  <td align="right">[% nf.format_price(form.orderheader.amount) %]</td>
+</tr>
+</table>
+<br/>
+<div align=right><a href="index.pl?page=orders">Back to orders list</a></div>
+
+</div>
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

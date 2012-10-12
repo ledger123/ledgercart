@@ -1,0 +1,53 @@
+[% INCLUDE "$form.header" title='Orders' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>Orders list</h2>
+
+<br/>
+<form method="get" action="index.pl">
+From: <input type=text name=fromdate size=11 value="[% form.fromdate %]" title="dd-mm-yy">
+To: <input type=text name=todate size=11 value="[% form.todate %]" title="dd-mm-yy">
+
+<input type=checkbox value="Y" name=open checked> Open
+<input type=checkbox value="Y" name=closed> Closed
+
+<input type=submit name=action value="Update">
+<input type=hidden name=page value="orders">
+</form>
+
+<table width="100%">
+<tr class="listheading">
+  <th>Order</th>
+  <th>Date</th>
+  <th>Amount</th>
+</tr>
+[% j = 0 %]
+[% total_amount = 0 %]
+[% total_netamount = 0 %]
+[% FOREACH id IN form.orders.keys %]
+   [% total_amount = total_amount + form.orders.$id.amount %]
+   [% total_netamount = total_netamount + form.orders.$id.netamount %]
+   [% j = j + 1 %]
+   [% j = j % 2 %]
+<tr class="listrow[% j %]">
+  <td><a href="index.pl?page=orderdetail&oid=[% id %]">[% form.orders.$id.ordnumber %]</a></td>
+  <td align=right>[% form.orders.$id.transdate %]</td>
+  <td align=right>[% nf.format_price(form.orders.$id.netamount) %]</td>
+</tr>
+[% END %]
+
+<tr class="listtotal">
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td align=right>[% nf.format_price(total_netamount) %]</td>
+</tr>
+</table>
+
+</div>
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

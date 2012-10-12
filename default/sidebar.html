@@ -1,0 +1,54 @@
+<div id="aside">
+
+<form method='get' action='index.pl'>
+<input type=text name=search_text size=15>
+<input type=submit name=action value='Search'>
+</form>
+
+<h3>Groups</h3>
+<ul>
+[% FOREACH gid IN form.allgroups.keys %]
+<li><a href="index.pl?gid=[% gid %]">[% form.allgroups.$gid.partsgroup %]</a>
+[% END %]
+</ul>
+
+<h3>Your cart</h3>
+<ul>
+<li>Items: [% form.cartcount %] (<a href=index.pl?page=cart>View cart</a>)</li>
+<li><a href="index.pl?page=checkout">Checkout</a></li>
+</ul>
+
+[% IF user.login %]
+<h4>Welcome <a href="index.pl?page=profile">[% form.customer.contact %]</a> (<a href="index.pl?page=logout&callback=[% form.callback %]">Logout</a>)</h4>
+<ul>
+<li><a href="index.pl?page=orders">Orders</a></li>
+<li><a href="index.pl?page=invoices">Invoices</a></li>
+</ul>
+[% ELSIF (form.page != 'checkout') and (form.page != 'review') and (form.page != 'finish') %]
+<form method=get id="validateform" action=index.pl>
+<p>Email<br/><input name=login class="required email" type=text size=20></p>
+<p><td>Password<br/><input name=passwd class="required" type=password size=15></p>
+<input type=submit name=submit value='Login'>
+<input type=hidden name='page' value='login'>
+<input type=hidden name='callback' value='[% form.callback %]'>
+</form>
+<a href=index.pl?page=remind>Forgot your password?</a>
+[% END %]
+
+[% IF user.customer_id == form.admin_id %]
+<h4>Admin</h4>
+<ul>
+<li><a href="index.pl?action=new">Save cart as new items</a></li>
+<li><a href="index.pl?action=hot">Save cart as hot items</a></li>
+</ul>
+
+<h4>Edit pages</h4>
+<ul>
+<li><a href=index.pl?page=editpage&page2edit=header>header.html</a></li>
+<li><a href=index.pl?page=editpage&page2edit=sidebar>sidebar.html</a></li>
+<li><a href=index.pl?page=editpage&page2edit=footer>footer.html</a></li>
+</ul>
+[% END %]
+
+</div>
+

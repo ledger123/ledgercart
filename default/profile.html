@@ -1,0 +1,49 @@
+[% INCLUDE "$form.header" title='Your profile' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>[% form.customer.name %]</h2>
+<p>
+Dear <b>[% form.customer.contact %]</b> please use this page to change your password:
+</p>
+
+<form method="post" action="index.pl">
+<table border="0">
+<tr><td align="right">Old password</td><td><input type=password name=old_password size=20></td></tr>
+<tr><td align="right">New password</td><td><input type=password name=password size=20></td></tr>
+<tr><td align="right">Confirm password</td><td><input type=password name=password2 size=20></td></tr>
+</table>
+
+<hr/>
+
+<table border="0">
+<tr><td align="right">First Name</td><td><input type=text name=firstname size=30 value="[% form.customer.firstname %]"><td></tr>
+<tr><td align="right">Last Name</td><td><input type=text name=lastname size=30 value="[% form.customer.lastname %]"><td></tr>
+<tr><td align="right">Company</td><td><input type=text name=name size=30 value="[% form.customer.name %]"><td></tr>
+<tr><td align="right">Phone</td><td><input type=text name=phone size=30 value="[% form.customer.phone %]"><td></tr>
+<tr><td align="right">Fax</td><td><input type=text name=fax size=30 value="[% form.customer.fax %]"><td></tr>
+<tr><td align="right">Address</td><td><input type=text name=address1 size=30 value="[% form.customer.address1 %]"><td></tr>
+<tr><td align="right">&nbsp;</td><td><input type=text name=address2 size=30 value="[% form.customer.address2 %]"><td></tr>
+<tr><td align="right">City</td><td><input type=text name=city size=30 value="[% form.customer.city%]"><td></tr>
+<tr><td align="right">State</td><td><input type=text name=state size=30 value="[% form.customer.state%]"><td></tr>
+<tr><td align="right">Zipcode</td><td><input type=text name=zipcode size=30 value="[% form.customer.zipcode%]"><td></tr>
+<tr><td align="right">Country</td><td><input type=text name=country size=30 value="[% form.customer.country%]"><td></tr>
+</table>
+
+<hr/>
+
+<input type=submit name=submit value='Update Profile'>
+
+<input type=hidden name=action value='update_profile'>
+<input type=hidden name=page value='profile'>
+
+</form>
+
+</div>
+
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

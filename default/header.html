@@ -1,0 +1,32 @@
+<html>
+<head>
+  <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+  <title>[% form.storename %] - [% title %]</title>
+  <link rel="stylesheet" href="[% form.css %]" type="text/css" media="screen" />
+  <script src="js/jquery-1.5.2.min.js"></script>
+  <script src="js/jquery.validate.min.js"></script>
+  <script>
+  $(document).ready(function(){
+    $("#validateform").validate();
+    $("#validateform2").validate();
+  });
+  </script>
+</head>
+<body>
+<div id="container">
+	<div id="header">
+		<img src="logo.png">
+<!--
+		<h1>[% form.storename %]</h1>
+		<h3>[% form.tagline %]</h3>
+-->
+	</div>
+	<div id="navigation">
+		<ul>
+			<li><a href="index.pl?page=index">Home</a></li>
+			<li><a href="index.pl?page=about">About us</a></li>
+			<li><a href="index.pl?page=contact">Contact us</a></li>
+		</ul>
+	</div>
+	<div id="content-container">
+

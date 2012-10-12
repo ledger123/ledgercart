@@ -1,0 +1,24 @@
+[% INCLUDE "$form.header" title='Editing Page' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>Editing [% form.page2edit %].html</h2>
+
+[% IF form.isadmin %]
+<form action="index.pl" method="post">
+<p><textarea name="page_contents" rows=20 cols=70>[% form.page_contents %]</textarea></p>
+<p><input type="submit" name="action" value="Update Page" /></p>
+<input type=hidden name=page2edit value=[% form.page2edit %] />
+</form>
+[% END %]
+
+<a href=index.pl?page=[% form.page2edit %]>Cancel editing</a>
+
+</div>
+
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

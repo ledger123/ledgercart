@@ -1,0 +1,39 @@
+[% INCLUDE "$form.header" title='Items List' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>[% form.allgroups.$gid.partsgroup %]</h2>
+
+<table width="100%">
+<tr class="listheading">
+  <th>&nbsp;</th><th>Product</th><th>SKU</th><th>Price</th><th>Qty</th><th>&nbsp;</th>
+</tr>
+
+[% j = 0 %]
+[% FOREACH pid IN form.allitems.keys %]
+   [% j = j + 1 %]
+   [% j = j % 2 %]
+<tr class="listrow[%j%]">
+  <td><a href="index.pl?pid=[% pid %]"><img src="products/thumb.[% form.allitems.$pid.image %]"></a></td>
+  <td><a href="index.pl?pid=[% pid %]">[% form.allitems.$pid.description %]</a></td>
+  <td>[% form.allitems.$pid.partnumber %]</td>
+  <td align=right>[% nf.format_price(form.allitems.$pid.sellprice) %]</td>
+  <form action="index.pl" method="post">
+    <td><input type=text name=qty size=3 value=""></td>
+    <td><input type=submit name=submit value='Add to cart'></td>
+    <input type=hidden name=view value='list'>
+    <input type=hidden name=action value='add_to_cart'>
+    <input type=hidden name=pid value=[% form.allitems.$pid.id %]>
+    <input type=hidden name=gid value=[% form.allitems.$pid.gid %]>
+  </form>
+</tr>
+[% END %]
+</table>
+
+</div>
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

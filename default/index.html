@@ -1,0 +1,62 @@
+[% INCLUDE "$form.header" title='Home' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>Welcome</h2>
+
+<h3>Welcome to the Ledger123Cart Store!</h3>
+
+<p>This site is intended to get you started building your 
+own e-business site. Replace the stock graphics, products, 
+and categories in this store to begin building your custom site.</p>
+
+<br/>
+
+<h2>What's new</h2>
+<br/>
+
+<table border="0" width="100%">
+[% FOREACH pid IN form.newitems.keys %]
+  [% IF loop.index == 0 OR loop.index == 3 %]
+<tr valign="top">
+  [% END %]
+  <td>
+        <p><a href="index.pl?pid=[% pid %]">[% form.newitems.$pid.description %]</a></p>
+	<p><a href="index.pl?pid=[% pid %]"><img src="products/small.[% form.newitems.$pid.image %]"></a></p>
+        <p>Our Price: [% nf.format_price(form.newitems.$pid.sellprice) %]</p>
+  </td>
+  [% IF loop.index == 2 OR loop.index == 5 %]
+</tr>
+  [% END %]
+[% END %]
+</table>
+
+<br/>
+<br/>
+
+<h2>What's hot</h2>
+<br/>
+<table border="0" width="100%">
+[% FOREACH pid IN form.hotitems.keys %]
+  [% IF loop.index == 0 OR loop.index == 3 %]
+<tr valign="top">
+  [% END %]
+  <td>
+        <p><a href="index.pl?pid=[% pid %]">[% form.hotitems.$pid.description %]</a></p>
+	<p><a href="index.pl?pid=[% pid %]"><img src="products/small.[% form.hotitems.$pid.image %]"></a></p>
+        <p>Our Price: [% nf.format_price(form.hotitems.$pid.sellprice) %]</p>
+  </td>
+  [% IF loop.index == 2 OR loop.index == 5 %]
+</tr>
+  [% END %]
+[% END %]
+</table>
+
+
+</div>
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

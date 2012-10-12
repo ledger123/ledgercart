@@ -1,0 +1,20 @@
+[% INCLUDE "$form.header" title='Password reminder' %]
+<div id="content">
+
+[% info_msg %]
+[% error_msg %]
+
+<h2>Reset your password</h2>
+<form>
+<ul>
+<li>Your email: <input type=text size=30 name=email></li>
+</ul>
+<input type=submit value='Send new password'>
+<input type=hidden name='page' value='remind2'>
+</form>
+
+</div>
+
+[% INCLUDE "$form.sidebar" %]
+
+[% INCLUDE "$form.footer" %]

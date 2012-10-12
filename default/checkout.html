@@ -1,0 +1,115 @@
+[% INCLUDE "$form.header" title='Checkout' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>Checkout</h2>
+
+<hr/>
+
+[% IF NOT user.login %]
+<form method=post id="validateform" action=index.pl>
+<div align="center"><h3>Existing customers, login with your email</h3></div>
+<table border="0">
+<tr><td>Email</td><td><input name=login class="required email" type=text size=30></td></tr>
+<tr><td>Password</td><td><input name=passwd class="required" type=password size=15></td></tr>
+</table>
+<input type=submit name=submit value='Login'>
+<input type=hidden name='page' value='login'>
+<input type=hidden name='callback' value='[% form.callback %]'>
+</form>
+
+<hr/>
+<div align="center"><h3>New customers, create your account</h3></div>
+
+<form method=post id="validateform2" action=index.pl>
+
+<h2>Bill To:</h2>
+<table border="0">
+<tr><td>Email</td><td><input name=email class="required email" type=text size=30></td></tr>
+<tr><td>Password</td><td><input name=password class="required" type=password size=15></td></tr>
+<tr><td>Retype password</td><td><input name=password2 class="required" type=password size=15></td></tr>
+<tr><td colspan=2><hr/></td></tr>
+<tr><td>First Name</td><td><input name=firstname class="required" type=text size=30></td></tr>
+<tr><td>Last Name</td><td><input name=lastname class="required" type=text size=30></td></tr>
+<tr><td>Company</td><td><input name=name class="required" type=text size=30></td></tr>
+<tr><td>Phone</td><td><input name=phone class="required" type=text size=30></td></tr>
+<tr><td>Address1</td><td><input name=address1 class="required" type=text size=30></td></tr>
+<tr><td>Address2</td><td><input name=address2 class="required" type=text size=30></td></tr>
+<tr><td>City</td><td><input name=city class="required" type=text size=30></td></tr>
+<tr><td>State/Province</td><td><input class="required" name=state type=text size=30></td></tr>
+<tr><td>Zip/Postal Code</td><td><input class="required" name=zipcode type=text size=30></td></tr>
+<tr><td>Country</td><td><input name=country class="required" type=text size=30></td></tr>
+
+[% FOREACH accno IN tax.keys %]
+<tr><td>&nbsp;</td><td><input type=checkbox name="tax_[% accno %]" value="Yes">[% tax.$accno.description %]</td></tr>
+[% END %]
+
+</table>
+
+[% ELSE %]
+
+<form method=post action=index.pl>
+<h2>Bill To:</h2>
+<ul>
+<li>Email: [% form.customer.email %]</li>
+<li>First name: [% form.customer.firstname %]</li>
+<li>Last name: [% form.customer.lastname %]</li>
+<li>Company: [% form.customer.name %]</li>
+<li>Phone: [% form.customer.phone %]</li>
+<li>Address1: [% form.customer.address1 %]</li>
+<li>Address2: [% form.customer.address2 %]</li>
+<li>City: [% form.customer.city %]</li>
+<li>State: [% form.customer.state %]</li>
+<li>Zipcode: [% form.customer.zipcode %]</li>
+<li>Country: [% form.customer.country %]</li>
+
+<input type=hidden name=email     value='[% form.customer.email %]'>
+<input type=hidden name=password  value='dummy'>
+<input type=hidden name=password2 value='dummy'>
+<input type=hidden name=name      value='[% form.customer.name %]'>
+<input type=hidden name=firstname value='[% form.customer.firstname %]'>
+<input type=hidden name=lastname  value='[% form.customer.lastname %]'>
+<input type=hidden name=phone     value="[% form.customer.phone %]">
+<input type=hidden name=address1  value="[% form.customer.address1 %]">
+<input type=hidden name=address2  value="[% form.customer.address2 %]">
+<input type=hidden name=city      value="[% form.customer.city %]">
+<input type=hidden name=state     value="[% form.customer.state %]">
+<input type=hidden name=zipcode   value="[% form.customer.zipcode %]">
+<input type=hidden name=country   value="[% form.customer.country %]">
+</ul>
+[% END %]
+
+<table>
+<tr><td>Special Notes:</td></tr>
+<tr><td><textarea name="notes" rows=3 cols=40></textarea></td></tr>
+</table>
+
+<br/>
+<hr/>
+<h2>Ship To:</h2>
+<p>(Leave blank if same as bill to:)</p>
+<table border="0">
+<tr><td>Full name</td><td><input name=shiptocontact type=text value="[% form.customer.shiptocontact %]" size=30></td></tr>
+<tr><td>Company</td><td><input name=shiptoname type=text value="[% form.customer.shiptoname %]" size=30></td></tr>
+<tr><td>Address1</td><td><input name=shiptoaddress1 type=text value="[% form.customer.shiptoaddress1 %]" size=30></td></tr>
+<tr><td>Address2</td><td><input name=shiptoaddress2 type=text value="[% form.customer.shiptoaddress2 %]" size=30></td></tr>
+<tr><td>City</td><td><input name=shiptocity type=text value="[% form.customer.shiptocity %]" size=30></td></tr>
+<tr><td>State/Province</td><td><input name=shiptostate type=text value="[% form.customer.shiptostate %]" size=30></td></tr>
+<tr><td>Zip/Postal Code</td><td><input name=shiptozipcode type=text value="[% form.customer.shiptozipcode %]" size=30></td></tr>
+<tr><td>Country</td><td><input name=shiptocountry type=text value="[% form.customer.shiptocountry %]" size=30></td></tr>
+<tr><td>Phone</td><td><input name=shiptophone type=text value="[% form.customer.shiptophone %]" size=30></td></tr>
+<tr><td>Fax</td><td><input name=shiptofax type=text value="[% form.customer.shiptofax %]" size=30></td></tr>
+<tr><td>Email</td><td><input name=shiptoemail type=text value="[% form.customer.shiptoemail %]" size=30></td></tr>
+</table>
+<hr/>
+<input type=submit name=submit value='Continue'>
+<input type=hidden name='page' value='review'>
+</form>
+
+</div>
+
+<!-- [% INCLUDE "$form.sidebar" %] -->
+
+[% INCLUDE "$form.footer" %]

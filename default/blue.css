@@ -1,0 +1,112 @@
+body {
+	background: #eee;
+	font: 70%/1.6em Verdana, Tahoma, arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+	color: #094989;
+}
+
+p, table {
+	font: 1.2em Verdana, Tahoma, arial, sans-serif;
+}
+
+#container
+{
+	margin: 0 auto;
+	width: 100%;
+	background: #fff;
+}
+
+#header
+{
+	background: #ccc;
+	padding: 20px;
+}
+
+#header h1 { margin: 0; }
+
+#navigation
+{
+	float: left;
+	width: 100%;
+	background: #094989;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+#navigation ul
+{
+	margin: 0;
+	padding: 0;
+}
+
+#navigation ul li
+{
+	list-style-type: none;
+	display: inline;
+}
+
+#navigation li a
+{
+	display: block;
+	float: left;
+	padding: 5px 10px;
+	color: #fff;
+	text-decoration: none;
+	border-right: 1px solid #fff;
+}
+
+#navigation li a:hover { background: #383; }
+
+#content-container
+{
+	float: left;
+	width: 100%;
+	background: #FFF url(/layout-two-liquid-background2.gif) repeat-y 68% 0;
+}
+
+#content
+{
+	clear: left;
+	float: left;
+	width: 70%;
+	padding: 10px 0;
+	margin: 0 0 0 1%;
+	display: inline;
+}
+
+#content h2 { margin: 0; }
+
+#aside
+{
+	color: #68774A;
+	float: right;
+	width: 16%;
+	padding: 20px 0;
+	margin: 0 3% 0 0;
+	display: inline;
+}
+
+#aside ul { padding: 1px; }
+#aside ul li { list-style-type: none; font-size: 12px; }
+
+#aside h3 { margin: 0; }
+
+#footer
+{
+	clear: both;
+	background: #ccc;
+	text-align: right;
+	padding: 20px;
+	height: 1%;
+}
+
+.listtop { background-color: black; color: white; }
+.listheading { background-color: #6495ED;; color: white; }
+A.listheading:link, A.listheading:active, A.listheading:visited {color: white; text-decoration: none; }
+.listrow1 { background-color: #f8f8f8; vertical-align: top; }
+.listrow0 { background-color: #efefef; vertical-align: top; }
+.listsubtotal { background-color: #336666; color: white; }
+.listtotal { background-color: black; color: white; }
+

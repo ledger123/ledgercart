@@ -1,0 +1,63 @@
+[% INCLUDE default/header.html title='Invoices' %]
+<div id="content">
+
+[% form.info_msg %]
+[% form.error_msg %]
+
+<h2>Invoices list</h2>
+
+<br/>
+<form method="get" action="index.pl">
+From: <input type=text name=fromdate size=11 value="[% form.fromdate %]" title="dd-mm-yy">
+To: <input type=text name=todate size=11 value="[% form.todate %]" title="dd-mm-yy">
+
+<input type=checkbox value="Y" name=open checked> Open
+<input type=checkbox value="Y" name=closed> Closed
+
+<input type=submit name=action value="Update">
+<input type=hidden name=page value="invoices">
+</form>
+
+<table width="100%">
+<tr class="listheading">
+  <th>Invoice</th>
+  <th>Date</th>
+  <th>Amount</th>
+  <th>Paid</th>
+  <th>Due</th>
+</tr>
+[% j = 0 %]
+[% total_amount = 0 %]
+[% total_netamount = 0 %]
+[% total_paid = 0 %]
+[% FOREACH id IN form.invoices.keys %]
+   [% total_amount = total_amount + form.invoices.$id.amount %]
+   [% total_netamount = total_netamount + form.invoices.$id.netamount %]
+   [% total_paid = total_paid + form.invoices.$id.total_paid %]
+   [% total_due = total_due + form.invoices.$id.total_due %]
+   [% j = j + 1 %]
+   [% j = j % 2 %]
+<tr class="listrow[% j %]">
+  <td><a href="index.pl?page=invoicedetail&iid=[%id%]">[% form.invoices.$id.invnumber %]</a></td>
+  <td align=right>[% form.invoices.$id.transdate %]</td>
+  <td align=right>[% nf.format_price(form.invoices.$id.amount) %]</td>
+  <td align=right>[% nf.format_price(form.invoices.$id.paid) %]</td>
+  <td align=right>[% nf.format_price(form.invoices.$id.due) %]</td>
+</tr>
+[% END %]
+
+<tr class="listtotal">
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td align=right>[% nf.format_price(total_amount) %]</td>
+  <td align=right>[% nf.format_price(total_paid) %]</td>
+  <td align=right>[% nf.format_price(total_due) %]</td>
+</tr>
+
+</table>
+
+</div>
+
+[% INCLUDE default/sidebar.html %]
+
+[% INCLUDE default/footer.html %]

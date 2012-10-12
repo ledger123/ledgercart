@@ -1,0 +1,41 @@
+Dear [% form.customer.contact %]
+
+Thank you for your order. Here is your order detail:
+
+* Order Number: [% form.sonumber %]
+* Order Date: [% form.current_date %]
+
+* Email: [% form.customer.email %]
+* Business Name: [% form.customer.name %]
+* First name: [% form.customer.firstname %]
+* Last name: [% form.customer.lastname %]
+* Phone: [% form.customer.phone %]
+* Address1: [% form.customer.address1 %]
+* Address2: [% form.customer.address2 %]
+* City: [% form.customer.city %]
+* State: [% form.customer.state %]
+* Zipcode: [% form.customer.zipcode %]
+* Country: [% form.customer.country %]
+
+ITEM	DESCRIPTION		QTY	PRICE	EXTENDED
+--------------------------------------------------------
+[% subtotal = 0 %]
+[% FOREACH pid IN form.cart.keys -%]
+[% form.cart.$pid.partnumber -%]	[% form.cart.$pid.description -%]	[% form.cart.$pid.qty -%]	[% nf.format_price(form.cart.$pid.sellprice) -%]	[% nf.format_price(form.cart.$pid.extended) -%]
+[% subtotal = subtotal + form.cart.$pid.extended %]
+[% END %]
+
+Subtotal: [% subtotal -%]
+
+[% FOREACH accno IN tax.keys -%]
+[% IF tax.$accno.amount -%]
+[% tax.$accno.description -%] [% tax.$accno.amount -%]
+[% subtotal = subtotal + tax.$accno.amount -%]
+[% END -%]
+[% END -%]
+
+TOTAL: [% subtotal %]
+
+Thank you for your business.
+[% form.storename %]
+
