@@ -368,7 +368,7 @@ sub customer_links {
 #----------------------------------
 sub parts_links {
 
-  $form{allgroups} = $db->query("SELECT id, partsgroup FROM partsgroup ORDER BY partsgroup")->map_hashes('id');
+  $form{allgroups} = $db->query("SELECT id, partsgroup FROM partsgroup WHERE pos ORDER BY partsgroup")->map_hashes('id');
 
   $form{cart} = $db->query("
   	SELECT ca.parts_id id, ca.parts_id, p.partnumber, p.description,
@@ -412,6 +412,7 @@ sub parts_links {
 		FROM parts p
 		JOIN partsgroup pg ON (pg.id = p.partsgroup_id)
 		WHERE $where
+		AND pg.pos
 		ORDER BY p.description
     |;
     $form{allitems} = $dbh->selectall_hashref($query, 'id') or &error($query, 1);
@@ -430,6 +431,7 @@ sub parts_links {
 		JOIN partsgroup pg ON (pg.id = p.partsgroup_id)
 		JOIN partsattr pa ON (pa.parts_id = p.id)
 		WHERE pa.hotnew = '$_'
+		AND pg.pos
 		ORDER BY p.description
       |;
       $form{"${_}items"} = $dbh->selectall_hashref($query, 'id') or die($query) if $query;
@@ -448,6 +450,7 @@ sub parts_links {
 		FROM parts p
 		JOIN partsgroup pg ON (pg.id = p.partsgroup_id)
 		WHERE p.id = $form{pid}
+		AND pg.pos
 		ORDER BY p.partnumber
     |;
     $form{itemdetail} = $dbh->selectrow_hashref($query) or die($query);
