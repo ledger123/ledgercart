@@ -12,6 +12,7 @@ use GD::Thumbnail;
 use File::Basename;
 use Text::Markdown;
 use DBIx::Simple;
+use Data::Dumper;
 
 $CGI::Simple::POST_MAX = 1024 * 5000;
 $CGI::Simple::DISABLE_UPLOADS = 0;
@@ -368,7 +369,19 @@ sub customer_links {
 #----------------------------------
 sub parts_links {
 
-  $form{allgroups} = $db->query("SELECT id, partsgroup FROM partsgroup WHERE pos ORDER BY partsgroup")->map_hashes('id');
+  my @allgroups = $db->query("SELECT id, partsgroup FROM partsgroup WHERE pos ORDER BY partsgroup")->hashes;
+  my @allgroups2;
+
+  for (@allgroups){
+	@subgroups = split /:/, $_->{partsgroup};
+        if (@subgroups > 1){
+	   push @allgroups2, {id => $_->{id}, partsgroup => $subgroups[1], indent => '&nbsp;&nbsp;&nbsp;'};
+	} else {
+	   push @allgroups2, {id => $_->{id}, partsgroup => $_->{partsgroup}, indent => ''};
+	}
+  }
+
+  $form{allgroups} = \@allgroups2;
 
   $form{cart} = $db->query("
   	SELECT ca.parts_id id, ca.parts_id, p.partnumber, p.description,
@@ -413,6 +426,7 @@ sub parts_links {
 		JOIN partsgroup pg ON (pg.id = p.partsgroup_id)
 		WHERE $where
 		AND pg.pos
+		AND p.pos
 		ORDER BY p.description
     |;
     $form{allitems} = $dbh->selectall_hashref($query, 'id') or &error($query, 1);
@@ -432,6 +446,7 @@ sub parts_links {
 		JOIN partsattr pa ON (pa.parts_id = p.id)
 		WHERE pa.hotnew = '$_'
 		AND pg.pos
+		AND p.pos
 		ORDER BY p.description
       |;
       $form{"${_}items"} = $dbh->selectall_hashref($query, 'id') or die($query) if $query;
@@ -451,10 +466,22 @@ sub parts_links {
 		JOIN partsgroup pg ON (pg.id = p.partsgroup_id)
 		WHERE p.id = $form{pid}
 		AND pg.pos
+		AND p.pos
 		ORDER BY p.partnumber
     |;
     $form{itemdetail} = $dbh->selectrow_hashref($query) or die($query);
     $form{itemdetail}{image} = 'blank.gif' if ! -f "products/$form{itemdetail}{image}";
+
+    my @alternate_items = $db->query(qq|
+	SELECT p.id, p.description, '' checked
+	FROM parts p
+	WHERE p.id IN (SELECT pa.alt_parts_id FROM parts_alt pa WHERE pa.parts_id = ?)
+	UNION ALL 
+	SELECT p.id, p.description, 'checked' checked
+	FROM parts p
+	WHERE p.id = ?
+	ORDER BY description|, $form{pid}, $form{pid})->hashes;
+    $form{alternate_items} = \@alternate_items;
 
     my $m = Text::Markdown->new;
     my $htmlnotes = $m->markdown($form{itemdetail}{notes});

@@ -7,8 +7,8 @@
 
 <h3>Groups</h3>
 <ul>
-[% FOREACH gid IN form.allgroups.keys %]
-<li><a href="index.pl?gid=[% gid %]">[% form.allgroups.$gid.partsgroup %]</a>
+[% FOREACH group = form.allgroups %]
+<li>[% group.indent %]<a href="index.pl?gid=[% group.id %]">[% group.partsgroup %]</a>
 [% END %]
 </ul>
 

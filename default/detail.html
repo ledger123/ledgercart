@@ -13,14 +13,20 @@
 </tr>
 <tr>
   <td>Price: [% nf.format_price(form.itemdetail.sellprice) %]</td>
-  <td align=right>
+  <td>
 	<form action='index.pl' method=post>
+
+[% FOREACH item = form.alternate_items %]
+<input type=radio name=pid value="[% item.id %]" [% item.checked %]> - [% item.description %]<br/>
+[% END %]
+
+<br/>
 	Quantity <input type=text name=qty size=3 value=1>
 	<input type=submit name=submit value='Add to cart'>
 	<input type=hidden name=action value='add_to_cart'>
 	<input type=hidden name=view value='detail'>
-	<input type=hidden name=pid value=[% form.itemdetail.id %]>
 	</form>
+</li>
   </td>
 </tr>
 </table>
