@@ -671,8 +671,8 @@ sub checkout {
 sub review {
    &error('Passwords do not match', 1) if $cgi->param('password') ne $cgi->param('password2');
 
-   for (qw(password email name firstname lastname address1 address2 city state zipcode country)){
-      &error("$_ cannot be blank", 1) if !$cgi->param($_);
+   for (qw(password email name firstname lastname address1 city state zipcode country)){
+      &error("$_ cannot be blank", 1) if !($cgi->param($_) or $user->customer_id);
    }
    for (qw(password email name firstname lastname address1 address2 city state zipcode country notes shiptoname shiptoaddress1 shiptoaddress2 shiptocity shiptostate shiptozipcode shiptocountry shiptocontact shiptophone shiptofax shiptoemail)){
       $form{$_} = $cgi->escapeHTML($cgi->param($_));
