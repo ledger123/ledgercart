@@ -228,6 +228,7 @@ sub actions {
    if ($form{action} eq 'add_to_cart'){
       my $qty = $cgi->param('qty');
       $qty *= 1;
+      &error('Qty should be > 0', 1) if !$qty;
       my $query = qq|SELECT COUNT(*) FROM customercart WHERE cart_id = ? AND parts_id = ?|;
       my $sth = $dbh->prepare($query);
       $sth->execute($form{cart_id}, $form{pid});
@@ -427,9 +428,10 @@ sub parts_links {
 		WHERE $where
 		AND pg.pos
 		AND p.pos
-		ORDER BY p.description
+		ORDER BY p.partnumber
     |;
     $form{allitems} = $dbh->selectall_hashref($query, 'id') or &error($query, 1);
+
     for (keys %{ $form{allitems} }){
        $form{allitems}{$_}{image} = 'blank.gif' if ! -f "products/$form{allitems}{$_}{image}";
     }
@@ -447,7 +449,7 @@ sub parts_links {
 		WHERE pa.hotnew = '$_'
 		AND pg.pos
 		AND p.pos
-		ORDER BY p.description
+		ORDER BY p.partnumber
       |;
       $form{"${_}items"} = $dbh->selectall_hashref($query, 'id') or die($query) if $query;
       for (keys %{ $form{allitems} }){
@@ -480,7 +482,7 @@ sub parts_links {
 	SELECT p.id, p.description, 'checked' checked
 	FROM parts p
 	WHERE p.id = ?
-	ORDER BY description|, $form{pid}, $form{pid})->hashes;
+	ORDER BY p.partnumber|, $form{pid}, $form{pid})->hashes;
     $form{alternate_items} = \@alternate_items;
 
     my $m = Text::Markdown->new;
