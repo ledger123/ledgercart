@@ -415,6 +415,7 @@ sub parts_links {
 		my $search = '%'. lc $form{search_text} . '%';
 		$where = "LOWER(p.description) LIKE '$search'";
 		$where .= " OR LOWER(pg.partsgroup) LIKE '$search'";
+		$where .= " AND pg.pos AND p.pos";
 		$form{page} = 'list';
     } else {
 		$where .= "pg.id = $form{gid}";
