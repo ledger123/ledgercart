@@ -483,7 +483,7 @@ sub parts_links {
 	SELECT p.id, p.description, 'checked' checked
 	FROM parts p
 	WHERE p.id = ?
-	ORDER BY p.partnumber|, $form{pid}, $form{pid})->hashes;
+	ORDER BY 1|, $form{pid}, $form{pid})->hashes;
     $form{alternate_items} = \@alternate_items;
 
     my $m = Text::Markdown->new;

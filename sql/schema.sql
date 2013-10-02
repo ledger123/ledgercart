@@ -24,3 +24,6 @@ CREATE TABLE partsattr (
     hotnew VARCHAR(3)
 );
 
+CREATE TABLE parts_alt (parts_id integer, alt_parts_id integer);
+ALTER TABLE parts ADD pos BOOLEAN DEFAULT true;
+
