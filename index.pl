@@ -833,6 +833,11 @@ sub finish {
             $trans_id,            $form{shiptoname},    $form{shiptoaddress1}, $form{shiptoaddress2}, $form{shiptocity}, $form{shiptostate},
             $form{shiptozipcode}, $form{shiptocountry}, $form{shiptocontact},  $form{shiptophone},    $form{shiptofax},  $form{shiptoemail}
         ) or die($query);
+        my $intnotes;
+        foreach my $x (qw(shiptoname shiptoaddress1 shiptoaddress2 shiptocity shiptostate shiptozipcode shiptocountry shiptocontact shiptophone shiptofax shiptoemail)) {
+            $intnotes .= substr($x,6) . " : $form{$x}\n";
+        }
+        $db->query("UPDATE oe SET intnotes = ? WHERE id = ?", $intnotes, $trans_id);
     }
 
     # add order detail
