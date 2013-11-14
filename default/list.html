@@ -12,7 +12,7 @@
 </tr>
 
 [% j = 0 %]
-[% FOREACH pid IN form.allitems.keys %]
+[% FOREACH pid IN form.allitems.keys.sort %]
    [% j = j + 1 %]
    [% j = j % 2 %]
 <tr class="listrow[%j%]">

@@ -449,7 +449,7 @@ sub parts_links {
 		AND p.pos
 		ORDER BY p.partnumber
     |;
-        $form{allitems} = $dbh->selectall_hashref( $query, 'id' ) or &error( $query, 1 );
+        $form{allitems} = $dbh->selectall_hashref( $query, 'partnumber' ) or &error( $query, 1 );
 
         for ( keys %{ $form{allitems} } ) {
             $form{allitems}{$_}{image} = 'blank.gif' if !-f "products/$form{allitems}{$_}{image}";
